@@ -17,5 +17,17 @@ model Survey {
   updatedAt DateTime  @default(now())
   deletedAt DateTime?
 
+  options SurveyOption[]
+
   @@map("surveys")
+}
+
+model SurveyOption {
+  id       String @id @default(uuid())
+  title    String
+  surveyId String
+
+  survey Survey @relation(fields: [surveyId], references: [id])
+
+  @@map("surveys_options")
 }
