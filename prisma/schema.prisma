@@ -18,6 +18,7 @@ model Survey {
   deletedAt DateTime?
 
   options SurveyOption[]
+  votes   Vote[]
 
   @@map("surveys")
 }
@@ -28,6 +29,21 @@ model SurveyOption {
   surveyId String
 
   survey Survey @relation(fields: [surveyId], references: [id])
+  votes  Vote[]
 
   @@map("surveys_options")
+}
+
+model Vote {
+  id             Int      @id @default(autoincrement())
+  sessionId      String
+  surveyId       String
+  surveyOptionId String
+  createdAt      DateTime @default(now())
+
+  surveyOption SurveyOption @relation(fields: [surveyOptionId], references: [id])
+  survey       Survey       @relation(fields: [surveyId], references: [id])
+
+  @@unique([sessionId, surveyId])
+  @@map("votes")
 }
