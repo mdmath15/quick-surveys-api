@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=surveys
+    volumes:
+      - surveys_pg_data:/bitnami/postgresql
+    
+  redis:
+    image: bitnami/redis:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+    volumes:
+      - surveys_redis_data:/bitnami/redis/data
+
+volumes:
+  surveys_pg_data:
+  surveys_redis_data:
