@@ -3,6 +3,7 @@ import { z } from "zod";
 import crypto from 'node:crypto';
 import { prisma } from "../lib/prisma.js";
 import { redis } from "../lib/redis.js";
+import { voting } from "../utils/voting-pub-sub.js";
 
 export async function voteOnSurvey(app: FastifyInstance) {
     app.post('/surveys/:surveyId/votes', async (request, reply) => {
@@ -36,7 +37,12 @@ export async function voteOnSurvey(app: FastifyInstance) {
                     }
                 })
 
-                await redis.zincrby(surveyId, -1, userPreviousVoteOnSurvey.surveyOptionId)
+                const votes = await redis.zincrby(surveyId, -1, userPreviousVoteOnSurvey.surveyOptionId)
+
+                voting.publish(surveyId, {
+                    surveyOptionId: userPreviousVoteOnSurvey.surveyOptionId,
+                    votes: Number(votes),
+                })
             } else if (userPreviousVoteOnSurvey) {
                 return reply.status(400).send({
                     message: 'User has already voted on this survey'
@@ -63,8 +69,13 @@ export async function voteOnSurvey(app: FastifyInstance) {
             }
         })
 
-        await redis.zincrby(surveyId, 1, surveyOptionId)
+        const votes = await redis.zincrby(surveyId, 1, surveyOptionId)
 
-        return reply.status(201).send();
+        voting.publish(surveyId, {
+            surveyOptionId,
+            votes: Number(votes),
+        })
+
+        return reply.status(201).send('Voted!');
     })
 }
