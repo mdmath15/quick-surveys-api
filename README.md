@@ -27,8 +27,8 @@ Certifique-se de ter Docker e Docker Compose instalados em sua máquina para fac
 
 1.  **Clone o repositório**
 
-`git clone https://seu-repositorio-aqui.com/projeto-api-enquetes.git
-cd projeto-api-enquetes` 
+`git clone https://github.com/mdmath15/quick-surveys-api.git
+cd quick-surveys-api` 
 
 2.  **Configuração de Ambiente**
 
