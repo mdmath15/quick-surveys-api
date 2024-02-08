@@ -27,8 +27,6 @@ Certifique-se de ter Docker e Docker Compose instalados em sua máquina para fac
 
 1.  **Clone o repositório**
 
-bashCopy code
-
 `git clone https://seu-repositorio-aqui.com/projeto-api-enquetes.git
 cd projeto-api-enquetes` 
 
@@ -38,29 +36,21 @@ Copie o arquivo `.env.example` para um novo arquivo chamado `.env` e ajuste as v
 
 3.  **Inicie os Serviços com Docker Compose**
 
-bashCopy code
-
 `docker-compose up -d` 
 
 Este comando irá subir os containers do PostgreSQL e do Redis, configurando-os conforme definido no arquivo `docker-compose.yml`.
 
 4.  **Instalação de Dependências**
 
-bashCopy code
-
 `npm install` 
 
 5.  **Execução das Migrações**
-
-bashCopy code
 
 `npx prisma migrate dev` 
 
 Este comando irá aplicar as migrações no banco de dados, criando as tabelas necessárias.
 
 6.  **Iniciar a Aplicação**
-
-bashCopy code
 
 `npm run dev` 
 
