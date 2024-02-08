@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import crypto from 'node:crypto';
 import { prisma } from "../lib/prisma.js";
+import { redis } from "../lib/redis.js";
 
 export async function voteOnSurvey(app: FastifyInstance) {
     app.post('/surveys/:surveyId/votes', async (request, reply) => {
@@ -34,6 +35,8 @@ export async function voteOnSurvey(app: FastifyInstance) {
                         id: userPreviousVoteOnSurvey.id
                     }
                 })
+
+                await redis.zincrby(surveyId, -1, userPreviousVoteOnSurvey.surveyOptionId)
             } else if (userPreviousVoteOnSurvey) {
                 return reply.status(400).send({
                     message: 'User has already voted on this survey'
@@ -59,6 +62,8 @@ export async function voteOnSurvey(app: FastifyInstance) {
                 surveyOptionId
             }
         })
+
+        await redis.zincrby(surveyId, 1, surveyOptionId)
 
         return reply.status(201).send();
     })
