@@ -1,4 +1,4 @@
-# Projeto API de Enquetes
+# Quick Surveys API
 
 Este projeto consiste em uma API de enquetes construída com Node.js e TypeScript, utilizando o framework Fastify para o manejo de requisições HTTP, Prisma como ORM para interação com o banco de dados PostgreSQL, e Redis para gerenciamento de dados em cache. A API também emprega WebSockets para permitir a visualização em tempo real dos votos nas enquetes, implementando o padrão de design Pub/Sub para otimizar a entrega de atualizações aos clientes conectados.
 
